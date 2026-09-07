@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: antilles-atlas-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-atlas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-atlas}
+      POSTGRES_DB: ${POSTGRES_DB:-antilles_atlas}
+    ports:
+      - "54320:5432"
+    volumes:
+      - antilles_atlas_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-atlas} -d ${POSTGRES_DB:-antilles_atlas}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  antilles_atlas_pgdata:

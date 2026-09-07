@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Docker
+*.log
+
+# Alembic (keep versions, ignore local db state if any gets dumped)
+*.sqlite3
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Geometry authoring scratch (QGIS project locks etc.)
+*.qgz~
+*.gpkg-shm
+*.gpkg-wal
