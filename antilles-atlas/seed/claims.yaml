@@ -1,0 +1,51 @@
+sources:
+  - key: pane-relacion
+    author: Ramón Pané
+    title: Relación acerca de las antigüedades de los indios
+    composed: c. 1498
+    language_of_composition: Spanish
+    original_extant: false
+    transmission:
+      - step: lost Spanish original
+      - step: copied/incorporated into Ferdinand Columbus, Historie del S. D. Fernando Colombo
+      - step: Ulloa Italian translation, Venice 1571
+        kind: translation          # NOT the same kind of link as a copy
+      - step: modern critical edition
+    edition: "FILL IN — the edition physically in front of you"
+    category: contemporary account surviving only via later transmission
+    friction: >
+      Peter Martyr and Las Casas also transmit material from Pané but are not
+      steps in this chain, they're parallel witnesses to a lost text. A single
+      ordered list can't say that. Does transmission need to be a graph?
+
+  - key: vega-1990
+    author: Bernardo Vega
+    title: Los cacicazgos de la Hispaniola
+    published: 1990
+    place: Santo Domingo
+    publisher: >
+      UNRESOLVED — AGN catalog gives "Amigo del Hogar"; WorldCat and
+      Herrera Malatesta's bibliography give "Fundación Cultural Dominicana".
+      Not yet checked against a physical or scanned title page.
+    language: Spanish
+    category: modern secondary synthesis
+    original_extant: true
+    transmission: []
+    edition_note: >
+      A 1980 Museo del Hombre Dominicano edition exists under the same title
+      (Investigaciones Antropológicas 13, 88 pp.). Whether the 1990 is a
+      reprint, a revision, or a distinct work is UNVERIFIED. Page citations
+      are not portable between them until this is settled. The Leiden
+      literature citing Vega's argument cites the 1980.
+    friction: >
+      `transmission: []` is wrong here, or at least incomplete. This source has
+      a version problem  two editions, conflicting imprints but it is not a
+      *transmission* problem in the Pané sense (no intermediary is altering the
+      text in flight). Two different phenomena currently collapse into one
+      empty list. Do I need `edition_identity` as a dimension separate from
+      transmission? If so it applies to Pané too, where the modern critical
+      edition choice matters independently of the 1571 chain.
+
+
+
+claims: []
