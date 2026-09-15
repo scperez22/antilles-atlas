@@ -1,4 +1,4 @@
-.PHONY: up migrate test revision dev reset
+.PHONY: up migrate test revision dev reset check-seed
 
 up: 
 	docker compose up -d
@@ -18,3 +18,6 @@ dev:
 reset:
 	docker compose down -v
 	docker compose up -d
+
+check-seed:
+	python scripts/check_seed.py
