@@ -28,3 +28,4 @@ venv/
 *.qgz~
 *.gpkg-shm
 *.gpkg-wal
+scratch/

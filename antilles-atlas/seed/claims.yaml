@@ -1,4 +1,9 @@
+# seed/claims.yaml
+# Phase 2 hand-entry. Deliberately denormalized. Prose over codes.
+# Anything that won't fit a field goes in `friction`, with the claim id.
+
 sources:
+
   - key: pane-relacion
     author: Ramón Pané
     title: Relación acerca de las antigüedades de los indios
@@ -9,14 +14,17 @@ sources:
       - step: lost Spanish original
       - step: copied/incorporated into Ferdinand Columbus, Historie del S. D. Fernando Colombo
       - step: Ulloa Italian translation, Venice 1571
-        kind: translation          # NOT the same kind of link as a copy
-      - step: modern critical edition
-    edition: "FILL IN — the edition physically in front of you"
+        kind: translation
+      - step: Arrom Spanish critical edition (reconstruction from the Italian)
+        edition: "FILL IN — the edition physically in front of you"
     category: contemporary account surviving only via later transmission
     friction: >
       Peter Martyr and Las Casas also transmit material from Pané but are not
-      steps in this chain, they're parallel witnesses to a lost text. A single
+      steps in this chain — they're parallel witnesses to a lost text. A single
       ordered list can't say that. Does transmission need to be a graph?
+      Also: Arrom back-renders Spanish from Ulloa's Italian. "Spanish original →
+      Italian → reconstructed Spanish" is the same step count as "→ Italian →
+      English" but a different shape. Count is not enough.
 
   - key: vega-1990
     author: Bernardo Vega
@@ -24,9 +32,9 @@ sources:
     published: 1990
     place: Santo Domingo
     publisher: >
-      UNRESOLVED — AGN catalog gives "Amigo del Hogar"; WorldCat and
-      Herrera Malatesta's bibliography give "Fundación Cultural Dominicana".
-      Not yet checked against a physical or scanned title page.
+      UNRESOLVED — AGN catalog gives "Amigo del Hogar"; WorldCat and Herrera
+      Malatesta's bibliography give "Fundación Cultural Dominicana".
+      Not checked against a title page. Copy on ILL request.
     language: Spanish
     category: modern secondary synthesis
     original_extant: true
@@ -34,18 +42,335 @@ sources:
     edition_note: >
       A 1980 Museo del Hombre Dominicano edition exists under the same title
       (Investigaciones Antropológicas 13, 88 pp.). Whether the 1990 is a
-      reprint, a revision, or a distinct work is UNVERIFIED. Page citations
-      are not portable between them until this is settled. The Leiden
-      literature citing Vega's argument cites the 1980.
+      reprint, a revision, or a distinct work is UNVERIFIED. Page citations are
+      not portable between them. The Leiden literature cites the 1980.
     friction: >
-      `transmission: []` is wrong here, or at least incomplete. This source has
-      a version problem  two editions, conflicting imprints but it is not a
-      *transmission* problem in the Pané sense (no intermediary is altering the
-      text in flight). Two different phenomena currently collapse into one
-      empty list. Do I need `edition_identity` as a dimension separate from
-      transmission? If so it applies to Pané too, where the modern critical
-      edition choice matters independently of the 1571 chain.
+      `transmission: []` is wrong, or incomplete. This source has a version
+      problem — two editions, conflicting imprints — but not a *transmission*
+      problem in the Pané sense; no intermediary is altering text in flight.
+      Two phenomena collapsing into one empty list. Need `edition_identity`
+      separate from transmission? If so it applies to Pané too.
 
+  - key: herrera-malatesta-2022
+    author: Eduardo Herrera Malatesta
+    title: >
+      The Transformation of Indigenous Landscape in the First Colonized
+      Region of the Caribbean
+    published: 2022
+    venue: Land 11(4):509
+    doi: 10.3390/land11040509
+    access: open access (MDPI)
+    language: English
+    category: peer-reviewed modern archaeology
+    original_extant: true
+    transmission: []
 
+  - key: martyr-decades
+    author: Pedro Mártir de Anglería (Peter Martyr d'Anghiera)
+    title: De Orbe Novo (Décadas del Nuevo Mundo)
+    composed: "VERIFY — decades composed at intervals; the relevant decade is FILL"
+    language_of_composition: Latin
+    original_extant: true
+    category: contemporary account, secondhand
+    transmission:
+      - step: "VERIFY — which edition/translation you are actually using"
+    friction: >
+      Mártir never crossed the Atlantic. He is contemporary AND secondhand
+      simultaneously — exactly the case §2.3 says must not collapse into one
+      ordinal. He is also the transmission vector for the Morales map, so he is
+      both a source for claims and a link in another source's chain. Can one
+      row be both?
 
-claims: []
+  - key: lascasas-apologetica
+    author: Bartolomé de las Casas
+    title: "VERIFY — Apologética historia sumaria vs Historia de las Indias"
+    composed: "VERIFY — decades after the events described"
+    language_of_composition: Spanish
+    original_extant: true
+    category: contemporary account, late composition
+    transmission:
+      - step: "VERIFY — manuscript history; not printed in his lifetime"
+    friction: >
+      Las Casas arrived early but wrote late. Proximity-to-events and
+      proximity-to-composition diverge inside a single source. Vega's whole
+      argument for preferring Morales rests on this.
+
+  - key: ARCHAEO-SOURCE-01
+    title: "FILL — site report or synthesis for the Meillacoid distribution claim"
+    category: archaeological site report
+    friction: >
+      Placeholder. Do not enter C007 attachments until this is a real citation.
+
+  - key: ARCHAEO-SOURCE-02
+    title: "FILL — publication reporting the radiocarbon determination in C008"
+    category: peer-reviewed modern archaeology
+    friction: >
+      Placeholder. Radiocarbon claims need lab code and calibration curve
+      recorded, neither of which has a field yet.
+
+claims:
+
+  - id: C001
+    assertion: >
+      Taíno belief held that the dead depart to Coaybay, described as the
+      dwelling place of the dead.
+    kind: practice_or_belief
+    subject: Taíno (Hispaniola)
+    when: at contact, c. 1492–1498
+    geometry: none
+    attachments:
+      - source: pane-relacion
+        role: supports
+        locus: "FILL — chapter/section in the edition you read"
+        proximity: "UNREAD — write after reading"
+        access: "UNREAD — did Pané say he witnessed this or was told it?"
+        transmission: "UNREAD — write after reading"
+        evidence_type: documentary
+    corroboration: none
+    friction: >
+      Single witness. Nothing else in the corpus touches Coaybay. If the
+      classifier treats corroboration as a dimension, this is the floor case.
+
+  - id: C002
+    assertion: >
+      Xaraguá's territorial extent was approximately as reconstructed by Vega
+      (1990) on the basis of the Morales map and Pedro Mártir, in preference to
+      the Charlevoix/Oviedo-derived boundaries.
+    kind: claimed_boundary
+    subject: Xaraguá
+    when: c. 1492
+    geometry:
+      type: polygon
+      status: to be digitized in QGIS from the published figure
+      interpretation_label: vega-1990
+      source_figure: "FILL — page/plate number"
+      imprecision: >
+        traced from a printed reconstruction at unknown scale; approximate.
+    attachments:
+      - source: vega-1990
+        role: supports
+        proximity: >
+          ~500 years from the events. Near-meaningless as a dimension for a
+          modern reconstruction — see C002-a.
+        access: >
+          None to the events. Access is to the Morales map and to Mártir's
+          transmission of it, both themselves mediated.
+        transmission: >
+          Zero for Vega's own text. But the evidence Vega reasons from has a
+          long chain: Morales survey → Mártir → later cartographic copies.
+          That chain is invisible in this attachment.
+        evidence_type: documentary (modern interpretation of a cartographic source)
+    friction: >
+      C002-a: proximity/access are near-meaningless for modern scholarship but
+      the classifier will still compute something. Either nullable-by-category,
+      or `category` gates which dimensions apply.
+      C002-b: the source supports the *interpretation*, not the boundary. Two
+      stacked assertions — "Morales depicts five regions" and "those regions
+      were political territories." Decomposition rule says split, but then only
+      one carries geometry. Does a boundary hang off a claim or a chain?
+      C002-c: Morales map dated 1508 (survey) in some literature, 1516
+      (publication in Mártir) in others. Proposal says 1516. Decide which.
+      C002-d: competing interpretations are modeled as rival geometries over a
+      shared subject. Vega vs the traditional model differ in which *sources
+      are admissible*, not in how the same sources are read. Property of the
+      claim, the attachment, or neither?
+      C002-e: Google Books index for Vega shows CAIZCIMU, HYABO, DAIGUANI,
+      BAINOA, GUACAYARIMA, CAIABO and "27 provincias" — Morales province names,
+      not the five cacicazgo names. If confirmed, the two reconstructions
+      disagree about what the entities ARE, not just where borders sit. The
+      `polity` table has no stable subject for geometries to hang off.
+      THIS IS THE BIGGEST OPEN SCHEMA QUESTION. Confirm on ILL arrival.
+
+  - id: C003
+    assertion: >
+      The five-cacicazgo bounded-territory model is not supported by the
+      cartographic or documentary record; the Morales map depicts no borders
+      between regions.
+    kind: negative_or_disputing
+    subject: Hispaniola, five cacicazgos
+    when: n/a (historiographic)
+    geometry: none
+    attachments:
+      - source: herrera-malatesta-2022
+        role: contradicts
+        target_claim: C002
+        locus: "FILL — page"
+        proximity: n/a
+        access: >
+          To the cartographic record and to the archaeological survey data.
+        transmission: none
+        evidence_type: documentary + material
+    friction: >
+      Not a competing polygon — an argument that the polygon class is wrong.
+      `role: contradicts` here points at a CLAIM, every other role points at a
+      subject. Either attachments need an optional claim target, or disputes
+      need their own relation.
+
+  - id: C004
+    assertion: >
+      Xaraguá was the largest of the cacicazgos, bounded north by Marién, east
+      by Maguana, south by the Caribbean, and west by the Jamaica Channel, with
+      its seat at Guava near present-day Léogâne and divided into 26 nitaínos.
+    kind: claimed_boundary
+    subject: Xaraguá
+    when: c. 1492
+    geometry:
+      type: polygon
+      status: not to be digitized — see friction
+    attachments: []
+    expected_classification: unproven
+    provenance_note: >
+      This is the version reproduced in general reference works and popular
+      cartography. Entered verbatim as the popular formulation.
+    friction: >
+      Does an empty attachment list classify as "unproven" or as "not yet
+      researched"? Those are different states and the UI must not conflate them.
+      Also: this is the single most widely reproduced statement about Xaraguá
+      and it is the one claim in the corpus with zero attached sources. That
+      contrast is the demo.
+
+  - id: C005
+    assertion: >
+      "FILL — the buried-images episode, stated as a single assertion"
+    kind: practice_or_belief
+    subject: Taíno (Hispaniola)
+    when: c. 1494–1498
+    geometry: none
+    attachments:
+      - source: pane-relacion
+        role: supports
+        access: "UNREAD"
+        transmission: "UNREAD"
+        evidence_type: documentary
+      - source: martyr-decades
+        role: supports
+        access: secondhand — Mártir never crossed the Atlantic
+        transmission: "VERIFY"
+        evidence_type: documentary
+      - source: lascasas-apologetica
+        role: supports
+        access: "VERIFY — present on Hispaniola, but wrote decades later"
+        transmission: "VERIFY"
+        evidence_type: documentary
+    corroboration: three sources, independent?
+    friction: >
+      Are Mártir and Las Casas independent witnesses, or are they both
+      transmitting Pané? If the latter, three attachments represent ONE
+      testimony and the classifier will overcount. Corroboration may need to
+      know about shared upstream sources — which is a graph, not a count.
+      Same problem as the pane-relacion transmission note, arriving from the
+      other direction.
+
+  - id: C006
+    assertion: >
+      Bohechío ruled Xaraguá at the time of Spanish arrival.
+    kind: attribution_of_rule
+    subject: Xaraguá
+    person: Bohechío
+    when: c. 1492–1498
+    geometry: none
+    attachments:
+      - source: lascasas-apologetica
+        role: supports
+        locus: "FILL"
+        access: "VERIFY"
+        transmission: "VERIFY"
+        evidence_type: documentary
+    friction: >
+      A person, a polity, a date, no geometry. Breaks any assumption that
+      claims are about places. Does `person` become an entity, or stay a
+      string? If C002-e holds and "Xaraguá" is not a stable subject, what does
+      this claim attach to?
+
+  - id: C007
+    assertion: >
+      "FILL — Meillacoid ceramic material is present at [site/region]"
+    kind: evidence_distribution
+    subject: "FILL — site or region"
+    when: "FILL — approximate range, e.g. 800–1500 CE"
+    geometry:
+      type: point
+      coordinates: "FILL"
+      imprecision: "FILL — site location precision"
+    attachments:
+      - source: ARCHAEO-SOURCE-01
+        role: supports
+        proximity: n/a — material evidence, not testimony
+        access: n/a
+        transmission: none
+        evidence_type: material
+    friction: >
+      proximity/access/transmission are all n/a or none for material evidence.
+      Three of four dimensions inapplicable. Either evidence_type gates the
+      others, or archaeological claims need a different dimension set entirely
+      (excavation quality? stratigraphic security? dating method?).
+
+  - id: C008
+    assertion: >
+      "FILL — occupation at [site] dated to [range] by radiocarbon"
+    kind: evidence_distribution
+    subject: "FILL"
+    when:
+      earliest: "FILL"
+      latest: "FILL"
+      basis: radiocarbon
+      lab_code: "FILL"
+      calibration: "FILL — curve and software"
+    geometry:
+      type: point
+      coordinates: "FILL"
+    attachments:
+      - source: ARCHAEO-SOURCE-02
+        role: supports
+        evidence_type: material
+    friction: >
+      No field exists for lab code or calibration curve, and without them the
+      date is not reproducible. Does `basis` need to be a structured object
+      rather than a string? Also: a calibrated range is a probability
+      distribution, not an interval. int4range flattens that. Acceptable loss?
+      Document the decision either way.
+
+  - id: C009
+    assertion: >
+      Xaraguá was the largest of the cacicazgos, bordered the Jamaica Channel
+      to the west, and was ruled by Bohechío at the time of Spanish arrival.
+    kind: COMPOSITE — retained deliberately, not to be loaded
+    decomposes_to: [C009a, C009b, C006]
+    attachments: []
+    friction: >
+      Kept alongside its children to show what the decomposition rule costs.
+      One readable sentence becomes three rows, and the reader loses the fact
+      that these three assertions travel together in every source that states
+      them. Is there a `statement` grouping above `claim`? Or is that
+      reintroducing the composite problem?
+
+  - id: C009a
+    assertion: Xaraguá was the largest of the cacicazgos.
+    kind: comparative_extent
+    subject: Xaraguá
+    attachments: []
+    friction: >
+      "Largest" is a comparative claim — it is about five subjects, not one.
+      Every other claim has a single subject.
+
+  - id: C009b
+    assertion: Xaraguá bordered the Jamaica Channel to the west.
+    kind: claimed_boundary_partial
+    subject: Xaraguá
+    attachments: []
+    friction: >
+      A partial boundary. Not a polygon, one edge. The geometry model has no
+      way to store "the western limit" without inventing the other three sides.
+
+  - id: C010
+    assertion: >
+      "FILL — a fact on which two sources actively disagree"
+    kind: "FILL"
+    subject: "FILL"
+    attachments: []
+    friction: >
+      Two sources, opposite roles, same claim. What does the classifier return?
+      "Well sourced" is absurd; "unproven" is wrong. Disagreement may not be a
+      point on the same scale as evidence strength at all.
+      Attachments left empty until real sources are identified — a placeholder
+      key here fails referential integrity in check_seed.py.
