@@ -62,7 +62,13 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
     with connectable.connect() as connection:
-        connection.exec_driver_sql("SET search_path TO public ")
+        connection.exec_driver_sql("SET search_path TO public")
+        # SQLAlchemy 2.0 autobegins a transaction on the statement above.
+        # Without this commit, Alembic's begin_transaction() below joins that
+        # outer transaction instead of owning one, and never commits it:
+        # `alembic upgrade` reports success and the migration silently rolls
+        # back when the connection closes.
+        connection.commit()
         context.configure(
             connection=connection,
             target_metadata=target_metadata,

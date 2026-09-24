@@ -58,13 +58,12 @@ def _enum(e:  type[enum.Enum]) -> Enum:
     )
 
 class EntityKind(str, enum.Enum):
-    #the six categories from proposal 2.3
-    CONTEMPORARY_CHRONICLE = "contemporary_chronicle"
-    LATER_TRANSMISSION = "later_transmission"    #transcriiption/abridgement/translation of another source 
-    PEER_REVIEWED_ARCHAEOLOGY = "peer_reviewed_archaeology"
-    MODERN_SYNTHESIS = "modern_synthesis"
-    SITE_REPORT = "site_report"
-    LINGUISTIC = "linguistic"
+    POLITY = "polity"          # a cacicazgo, as some source conceives it
+    PROVINCE = "province"      # Morales/Vega regions (C002-e)
+    PEOPLE = "people"          # e.g. "Taíno (Hispaniola)"
+    PERSON = "person"          # e.g. Bohechío (C006)
+    SITE = "site"              # archaeological site
+    REGION = "region"          # geographic, non-political
 
 class SourceCategory(str, enum.Enum):
     #the six categories from proposal 2.3
@@ -122,7 +121,7 @@ class Proximity(str, enum.Enum):
 
 class ClaimRelationKind(str, enum.Enum):
     DISPUTES = "disputes" #c003 disputes c002
-    DECOMES_TO = "becomes_to" #C009 -> C009A, C009b, C006
+    DECOMPOSES_TO = "decomposes_to" #C009 -> C009A, C009b, C006
 
     #----------------------------------------------------------------------------
     # Entity
@@ -181,7 +180,7 @@ class Source(Base):
     )
 
     #Edges where this source is the origin text
-    derivates: Mapped[list[SourceDerivation]] = relationship(
+    derivatives: Mapped[list[SourceDerivation]] = relationship(
         foreign_keys="SourceDerivation.origin_id", back_populates="origin"
     )
 
@@ -275,8 +274,8 @@ class ClaimSource(Base):
      would let the two disagree.
      """
 
-     __tablename__ = "claim_ source"
-     __table_args__ = (UniqueConstraint("claiim_id", "source_id", "role"), )
+     __tablename__ = "claim_source"
+     __table_args__ = (UniqueConstraint("claim_id", "source_id", "role"), )
      id: Mapped[int] = mapped_column(primary_key=True)
      claim_id: Mapped[int] = mapped_column(ForeignKey("claim.id", ondelete="CASCADE"))
      source_id: Mapped[int] = mapped_column(ForeignKey("source.id", ondelete="RESTRICT"))
