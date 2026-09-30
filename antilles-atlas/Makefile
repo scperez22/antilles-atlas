@@ -1,4 +1,4 @@
-.PHONY: up migrate test revision dev reset check-seed
+.PHONY: up migrate test revision dev reset check-seed load-seed
 
 up: 
 	docker compose up -d
@@ -21,3 +21,7 @@ reset:
 
 check-seed:
 	python scripts/check_seed.py
+
+load-seed:
+	PYTHONPATH=. python scripts/load_seed.py
+ 

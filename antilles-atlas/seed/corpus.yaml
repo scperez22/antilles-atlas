@@ -1,0 +1,204 @@
+# seed/corpus.yaml: structured seed, read by scripts/load_seed.py.
+#
+# Derived from seed/claims.yaml (Phase 2 hand-entry), which stays as the
+# friction log. Rule for this file: every value is either a column value, an
+# enum value, or null. Nothing is loaded that still says FILL / UNREAD / VERIFY
+# in the original; those stay in claims.yaml until you have read the source.
+#
+# Ranges are half-open [start, end): "c. 1492-1498" is [1492, 1499].
+#
+# NOT YET LOADED, and why:
+#   C005   assertion text is still "FILL"
+#   C007   placeholder source, subject, and coordinates
+#   C008   placeholder source, subject, and coordinates; needs lab_code/calibration
+#   C009*  composite + partial-boundary kinds have no ClaimKind mapping yet
+#          (claimed_boundary_partial, and whether COMPOSITE is loaded at all)
+#   C010   everything is FILL
+
+entities:
+  - key: taino-hispaniola
+    name: Taíno (Hispaniola)
+    kind: people
+  - key: xaragua
+    name: Xaraguá
+    kind: polity
+    notes: >
+      Entered as a polity because the popular model treats it as one. Whether
+      Vega's reconstruction is about this entity or about Morales provinces is
+      the open C002-e question; it is deliberately not decided here.
+  - key: hispaniola-five-cacicazgos
+    name: Hispaniola, five cacicazgos
+    kind: region
+    notes: Subject of C003, the historiographic claim about the five-cacicazgo model.
+
+sources:
+  # --- the Pané chain: four rows, one lost ---
+  - key: pane-original
+    author: Ramón Pané
+    title: Relación acerca de las antigüedades de los indios (lost original)
+    category: contemporary_chronicle
+    composed_label: c. 1498
+    language: Spanish
+    original_extant: false
+  - key: colon-historie
+    author: Ferdinand Columbus
+    title: Historie del S. D. Fernando Colombo
+    category: later_transmission
+  - key: ulloa-1571
+    author: Alfonso de Ulloa
+    title: Historie del S. D. Fernando Colombo (Italian translation)
+    category: later_transmission
+    composed_label: "1571"
+    composed_range: [1571, 1572]
+    language: Italian
+    place: Venice
+  - key: arrom-edition
+    author: José Juan Arrom
+    title: Relación acerca de las antigüedades de los indios (critical edition)
+    category: later_transmission
+    language: Spanish
+    notes: >
+      Back-renders Spanish from Ulloa's Italian. Which edition/printing you are
+      physically reading is still unfilled in claims.yaml.
+
+  # --- parallel witnesses to Pané ---
+  - key: martyr-decades
+    author: Pedro Mártir de Anglería (Peter Martyr d'Anghiera)
+    title: De Orbe Novo
+    category: contemporary_chronicle
+    language: Latin
+    notes: VERIFY which decade and edition/translation. Never crossed the Atlantic.
+  - key: lascasas-apologetica
+    author: Bartolomé de las Casas
+    title: Apologética historia sumaria
+    category: contemporary_chronicle
+    language: Spanish
+    notes: >
+      VERIFY whether this or Historia de las Indias is the work actually cited.
+      Arrived early, wrote decades later; not printed in his lifetime.
+
+  # --- modern ---
+  - key: vega-1990
+    author: Bernardo Vega
+    title: Los cacicazgos de la Hispaniola
+    category: modern_synthesis
+    composed_label: "1990"
+    composed_range: [1990, 1991]
+    language: Spanish
+    place: Santo Domingo
+    notes: >
+      Publisher UNRESOLVED (AGN catalog: Amigo del Hogar; WorldCat and Herrera
+      Malatesta: Fundación Cultural Dominicana). A 1980 Museo del Hombre
+      Dominicano edition exists under the same title; page citations are not
+      portable between them.
+  - key: herrera-malatesta-2022
+    author: Eduardo Herrera Malatesta
+    title: The Transformation of Indigenous Landscape in the First Colonized Region of the Caribbean
+    category: peer_reviewed_archaeology
+    composed_label: "2022"
+    composed_range: [2022, 2023]
+    language: English
+    venue: Land 11(4):509
+    doi: 10.3390/land11040509
+
+derivations:
+  - {origin: pane-original, derived: colon-historie, kind: copy}
+  - {origin: colon-historie, derived: ulloa-1571, kind: translation}
+  - {origin: ulloa-1571, derived: arrom-edition, kind: reconstruction}
+  - {origin: pane-original, derived: martyr-decades, kind: excerpt}
+  - {origin: pane-original, derived: lascasas-apologetica, kind: excerpt}
+
+claims:
+  - key: C001
+    assertion: >
+      Taíno belief held that the dead depart to Coaybay, described as the
+      dwelling place of the dead.
+    kind: practice_or_belief
+    subject: taino-hispaniola
+    when_label: at contact, c. 1492–1498
+    when_range: [1492, 1499]
+    research_status: in_progress
+    attachments: []
+    notes: >
+      Attachment to Pané deliberately NOT loaded yet: which of the four Pané rows
+      is being cited (and the access/proximity judgments) waits on reading it.
+      in_progress, not researched, so it cannot be mistaken for "unproven".
+
+  - key: C002
+    assertion: >
+      Xaraguá's territorial extent was approximately as reconstructed by Vega
+      (1990) on the basis of the Morales map and Pedro Mártir, in preference to
+      the Charlevoix/Oviedo-derived boundaries.
+    kind: claimed_boundary
+    subject: xaragua
+    when_label: c. 1492
+    when_range: [1492, 1493]
+    research_status: researched
+    attachments:
+      - source: vega-1990
+        role: supports
+        evidence_type: documentary
+        access: secondhand
+        proximity: modern
+        notes: >
+          access/proximity chosen from the enum comments (modern scholarship
+          reasoning from mediated evidence); confirm you agree.
+          Vega reasons from the Morales map via Mártir; that chain is not
+          visible on this attachment (see claims.yaml C002).
+    boundaries: []
+    notes: >
+      Polygon still to be traced in QGIS. When it exists, add:
+        boundaries:
+          - geojson: geo/vega-1990-xaragua.geojson
+            interpretation_label: vega-1990
+            source_figure: "page/plate number"
+            imprecision: "traced from a printed reconstruction at unknown scale"
+
+  - key: C003
+    assertion: >
+      The five-cacicazgo bounded-territory model is not supported by the
+      cartographic or documentary record; the Morales map depicts no borders
+      between regions.
+    kind: historiographic
+    subject: hispaniola-five-cacicazgos
+    research_status: researched
+    attachments:
+      - source: herrera-malatesta-2022
+        role: supports
+        evidence_type: documentary
+        access: secondhand
+        proximity: modern
+        notes: >
+          claims.yaml says "documentary + material"; the enum takes one value,
+          so material is recorded here only. Same access/proximity caveat as C002.
+
+  - key: C004
+    assertion: >
+      Xaraguá was the largest of the cacicazgos, bounded north by Marién, east
+      by Maguana, south by the Caribbean, and west by the Jamaica Channel, with
+      its seat at Guava near present-day Léogâne and divided into 26 nitaínos.
+    kind: claimed_boundary
+    subject: xaragua
+    when_label: c. 1492
+    when_range: [1492, 1493]
+    research_status: researched
+    attachments: []
+    notes: >
+      The widely reproduced popular formulation, zero attached sources. Loaded
+      as researched so it reads "unproven", not "not yet looked at".
+      Composite by the proposal's own rule (§3); see C009 decomposition.
+
+  - key: C006
+    assertion: Bohechío ruled Xaraguá at the time of Spanish arrival.
+    kind: attribution_of_rule
+    subject: xaragua
+    when_label: c. 1492–1498
+    when_range: [1492, 1499]
+    research_status: in_progress
+    attachments: []
+    notes: >
+      Las Casas attachment waits on locus/access. Bohechío has no entity row yet
+      (claim has a single subject; C006 friction in claims.yaml is unresolved).
+
+relations:
+  - {from: C003, to: C002, kind: disputes}
