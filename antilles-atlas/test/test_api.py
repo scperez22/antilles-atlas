@@ -130,3 +130,13 @@ def test_geometries_bbox(client):
 def test_geometries_bad_bbox_is_422(client):
     assert client.get("/geometries?bbox=1,2,3").status_code == 422
     assert client.get("/geometries?bbox=-72,18,-74,19").status_code == 422
+
+
+def test_map_client_is_served_without_shadowing_the_api(client):
+    page = client.get("/")
+    assert page.status_code == 200
+    assert "maplibre-gl" in page.text
+    assert client.get("/app.js").status_code == 200
+    # The static mount is at "/", so make sure API routes still win.
+    assert client.get("/claims").headers["content-type"].startswith("application/json")
+    assert client.get("/geometries").json()["type"] == "FeatureCollection"

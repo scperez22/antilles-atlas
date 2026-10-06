@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Antilles Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <!-- Pinned to the same version scratch/preview.py used. -->
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+  <main class="layout">
+    <div class="map-wrap">
+      <div id="map" aria-label="Map of boundary claims"></div>
+      <p id="map-empty" class="map-empty" hidden></p>
+    </div>
+
+    <aside class="panel">
+      <header class="panel-head">
+        <h1>Antilles Atlas</h1>
+        <div class="year">
+          <label for="year">Boundaries claimed for</label>
+          <div class="year-control">
+            <button type="button" id="year-prev" aria-label="Previous year">‹</button>
+            <input id="year" type="number" min="-500" max="1550" step="1" value="1492">
+            <button type="button" id="year-next" aria-label="Next year">›</button>
+          </div>
+          <p class="year-hint">Negative years are BCE.</p>
+        </div>
+        <ul class="legend">
+          <li><span class="swatch sourced"></span><b>Sourced</b> at least one source supports or qualifies it</li>
+          <li><span class="swatch unproven"></span><b>Unproven</b> researched, and nothing supports it</li>
+          <li><span class="swatch pending"></span><b>Pending</b> research not finished</li>
+        </ul>
+      </header>
+
+      <section id="panel-body" class="panel-body" aria-live="polite"></section>
+    </aside>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
