@@ -101,6 +101,18 @@ sources:
     venue: Land 11(4):509
     doi: 10.3390/land11040509
 
+  # --- early modern cartography ---
+  - key: danville-1731
+    author: Jean-Baptiste Bourguignon d'Anville (engraved by Leparmantier)
+    title: L'Isle Espagnole sous le nom indien d'Hayti
+    category: early_modern_synthesis
+    composed_label: Mai 1731
+    composed_range: [1731, 1732]
+    language: French
+    notes: >
+      BnF GE D-10885, viewed via Gallica. Issued with Charlevoix; imprint VERIFY.
+      D'Anville worked from Paris and did not visit the island.
+
 derivations:
   - {origin: pane-original, derived: colon-historie, kind: copy}
   - {origin: colon-historie, derived: ulloa-1571, kind: translation}
@@ -199,6 +211,38 @@ claims:
     notes: >
       Las Casas attachment waits on locus/access. Bohechío has no entity row yet
       (claim has a single subject; C006 friction in claims.yaml is unresolved).
+
+
+  - key: C011
+    assertion: >
+      The territory of the cacique Behechio occupied approximately the extent
+      d'Anville depicts on his 1731 map of Hispaniola.
+    kind: claimed_boundary
+    subject: xaragua
+    when_label: lors de la découverte (at contact)
+    when_range: [1492, 1493]
+    research_status: researched
+    attachments:
+      - source: danville-1731
+        role: supports
+        evidence_type: documentary
+        access: secondhand
+        proximity: distant
+    boundaries:
+      - geojson: geo/danville-1731-behechio.geojson
+        interpretation_label: danville-1731
+        source_figure: BnF GE D-10885, "Pays du Cacique Behechio"
+        imprecision: >
+          Traced by Claude from the Gallica scan (1422 x 1054 px). Georeferenced
+          with 10 GCPs, polynomial 2, residuals about 2-10 px (about 1.5-7 km).
+          Follows d'Anville's coastline, not the modern coast. His interior
+          dotted boundaries are faint at this resolution and partly
+          interpolated. Offshore islands excluded; the map does not assign them.
+    notes: >
+      Subject is the curator's equation: the map labels the territory by its
+      cacique (Behechio), not as "Xaraguá", though Xaragua appears inside it.
+      when_range is when the claim is ABOUT (contact); the 1731 date lives on
+      the source's composed_range.
 
 relations:
   - {from: C003, to: C002, kind: disputes}

@@ -30,6 +30,8 @@ def client(db, tmp_path):
     """Real corpus + two test polygons (C002 Vega, C004 popular), both c. 1492."""
     doc = copy.deepcopy(yaml.safe_load((SEED_DIR / "corpus.yaml").read_text(encoding="utf-8")))
     claims = {c["key"]: c for c in doc["claims"]}
+    for c in claims.values():          # real traced polygons (C011) are tested in test_seed
+        c.pop("boundaries", None)
     claims["C002"]["boundaries"] = [{"geojson": _write(tmp_path, "vega.geojson", VEGA_SQ),
                                      "interpretation_label": "vega-1990"}]
     claims["C004"]["boundaries"] = [{"geojson": _write(tmp_path, "pop.geojson", POP_SQ),
@@ -48,12 +50,12 @@ def client(db, tmp_path):
 def test_claims_list_carries_computed_sourcing_status(client):
     status = {c["key"]: c["sourcing_status"] for c in client.get("/claims").json()}
     assert status == {"C001": "pending", "C002": "sourced", "C003": "sourced",
-                      "C004": "unproven", "C006": "pending"}
+                      "C004": "unproven", "C006": "pending", "C011": "sourced"}
 
 
 def test_claims_filter_by_sourcing_and_subject(client):
     assert [c["key"] for c in client.get("/claims?sourcing=unproven").json()] == ["C004"]
-    assert [c["key"] for c in client.get("/claims?subject=xaragua").json()] == ["C002", "C004", "C006"]
+    assert [c["key"] for c in client.get("/claims?subject=xaragua").json()] == ["C002", "C004", "C006", "C011"]
 
 
 def test_bad_sourcing_filter_is_422(client):

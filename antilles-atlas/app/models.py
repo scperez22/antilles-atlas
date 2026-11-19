@@ -71,6 +71,7 @@ class SourceCategory(str, enum.Enum):
     LATER_TRANSMISSION = "later_transmission"    #transcriiption/abridgement/translation of another source 
     PEER_REVIEWED_ARCHAEOLOGY = "peer_reviewed_archaeology"
     MODERN_SYNTHESIS = "modern_synthesis"
+    EARLY_MODERN_SYNTHESIS = "early_modern_synthesis"  #added for d'Anville 1731; not one of the propsoal's six 
     SITE_REPORT = "site_report"
     LINGUISTIC = "linguistic"
 

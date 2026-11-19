@@ -27,8 +27,8 @@ def claim(db, key):
 
 def test_real_corpus_loads(db, corpus):
     counts = load_seed(db, corpus, SEED_DIR)
-    assert counts == dict(entities=3, sources=8, derivations=5, claims=5,
-                          attachments=2, boundaries=0, relations=1)
+    assert counts == dict(entities=3, sources=9, derivations=5, claims=6,
+                          attachments=3, boundaries=1, relations=1)
 
 
 def test_unsourced_popular_claim_reads_researched_not_unresearched(db, corpus):
@@ -113,6 +113,8 @@ def _polygon_file(tmp_path, ring, wrapper="FeatureCollection"):
 
 
 def _with_boundary(corpus, filename):
+    for c in corpus["claims"]:   # drop real polygons; these tests load from tmp_path
+        c.pop("boundaries", None)
     next(c for c in corpus["claims"] if c["key"] == "C002")["boundaries"] = [
         {"geojson": filename, "interpretation_label": "vega-1990",
          "source_figure": "test plate", "imprecision": "test"}]
@@ -133,6 +135,22 @@ def test_traced_polygon_is_loaded_and_queryable_by_place_and_year(db, corpus, tm
     assert hits(1492, -73.3, 18.4) == ["C002"]
     assert hits(1493, -73.3, 18.4) == []       # range is [1492, 1493): 1493 excluded
     assert hits(1492, -60.0, 18.4) == []       # right year, wrong place
+
+
+def test_real_danville_polygon_is_queryable_by_year(db, corpus):
+    """C011, the first real trace, answers a spatial-temporal query from the real seed."""
+    load_seed(db, corpus, SEED_DIR)
+
+    def hits(year):
+        return db.execute(text("""
+            SELECT c.key FROM claim c JOIN boundary_geometry b ON b.claim_id = c.id
+            WHERE c.when_range @> CAST(:y AS integer)
+              AND ST_Intersects(b.geom, (SELECT ST_PointOnSurface(geom) FROM boundary_geometry
+                                         WHERE interpretation_label = 'danville-1731'))
+        """), dict(y=year)).scalars().all()
+
+    assert hits(1492) == ["C011"]
+    assert hits(1731) == []      # the map's date is the SOURCE's date, not the claim's
 
 
 def test_swapped_lon_lat_is_caught(db, corpus, tmp_path):
