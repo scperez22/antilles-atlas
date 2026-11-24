@@ -73,8 +73,20 @@ class BoundaryRef(BaseModel):
     imprecision: str | None
 
 
+class EvidenceProfileOut(BaseModel):
+    """Classification. Each dimiension is its own field. there is no score."""
+    independent_witnesses: int
+    closest_proximity: str | None
+    best_access: str | None
+    shallowest_transmission: int | None
+    evidence_types: list[str]
+    qualifying_sources: list[str]
+    contradicting_sources: list[str]
+
+
 class ClaimDetail(ClaimSummary):
     notes: str | None
+    evidence: EvidenceProfileOut
     dating: dict | None
     attachments: list[AttachmentOut]
     relations: list[RelationOut]

@@ -77,6 +77,20 @@ def test_claim_detail_includes_boundary_refs_and_half_open_range(client):
     assert c["attachments"][0]["transmission"] == []     # Vega has no derivation edges
 
 
+def test_claim_detail_carries_evidence_profile(client):
+    e = client.get("/claims/C002").json()["evidence"]
+    assert e == {"independent_witnesses": 1, "closest_proximity": "modern",
+                 "best_access": "secondhand", "shallowest_transmission": 0,
+                 "evidence_types": ["documentary"],
+                 "qualifying_sources": [], "contradicting_sources": []}
+
+
+def test_unsourced_claim_has_empty_evidence_profile(client):
+    e = client.get("/claims/C004").json()["evidence"]
+    assert e["independent_witnesses"] == 0
+    assert e["closest_proximity"] is None and e["shallowest_transmission"] is None
+
+
 def test_unknown_claim_is_404(client):
     assert client.get("/claims/C999").status_code == 404
 

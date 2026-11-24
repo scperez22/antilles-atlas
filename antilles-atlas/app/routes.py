@@ -27,9 +27,10 @@ from app.models import (
     BoundaryGeometry, Claim, ClaimSource, Entity, Source, SourceCategory,
 )
 from app.schemas import (
-    AttachmentOut, BoundaryRef, ClaimDetail, ClaimSummary, DerivationEdge, EntityOut,
+    AttachmentOut, BoundaryRef, ClaimDetail, EvidenceProfileOut, ClaimSummary, DerivationEdge, EntityOut,
     RelationOut, SourceDetail, SourceSummary, YearRange,
 )
+from app.classify import profile
 from app.sourcing import sourcing_status
 
 router = APIRouter()
@@ -148,7 +149,18 @@ def get_claim(key: str, db: Session = Depends(get_db)):
     )
     boundaries = [BoundaryRef(id=b.id, interpretation_label=b.interpretation_label,
                               source_figure=b.source_figure, imprecision=b.imprecision) for b in c.boundaries]
+    p = profile(c)
+    evidence = EvidenceProfileOut(
+        independent_witnesses=p.independent_witnesses,
+        closest_proximity=_v(p.closest_proximity),
+        best_access=_v(p.best_access),
+        shallowest_transmission=p.shallowest_transmission,
+        evidence_types=[_v(t) for t in p.evidence_types],
+        qualifying_sources=p.qualifying_sources,
+        contradicting_sources=p.contradicting_sources,
+    )
     return ClaimDetail(**_claim_summary(c).model_dump(), notes=c.notes, dating=c.dating,
+                       evidence=evidence,
                        attachments=attachments, relations=relations, boundaries=boundaries)
 
 
