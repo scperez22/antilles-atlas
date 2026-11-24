@@ -135,3 +135,17 @@ h1 { margin: 0 0 14px; font: 600 20px/1.2 var(--serif); }
 .role { font-size: 13px; color: var(--ink-soft); }
 .attachment-notes { margin-top: 8px; font-size: 13px; }
 .relations li { padding: 6px 0; border-top: 1px solid var(--rule); font-size: 13px; }
+
+
+/* Evidence profile (Phase 5): one row per dimension, no combined score. */
+.evidence { display: grid; gap: 10px; }
+.ev-row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label label" "meter value"; gap: 3px 12px; align-items: center; }
+.ev-label { grid-area: label; font-size: 13px; font-weight: 500; }
+.ev-explain { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); }
+.meter, .ev-big { grid-area: meter; }
+.ev-value { grid-area: value; font-size: 13px; color: var(--ink-soft); text-align: right; }
+.ev-value .na { color: var(--pending); }
+.meter { display: flex; gap: 3px; }
+.meter .seg { flex: 1; height: 8px; background: var(--rule); border-radius: 2px; }
+.meter .seg.on { background: var(--sourced); }
+.ev-big { font: 600 20px/1 var(--sans); color: var(--ink); }

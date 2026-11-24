@@ -208,6 +208,54 @@ function attachmentHTML(a) {
     </div>`;
 }
 
+// ---------------------------------------------------------------------------
+// panel: evidence profile (Phase 5). One meter per dimension, never a total.
+// ---------------------------------------------------------------------------
+
+// Best first, matching the enum order in models.py.
+const PROXIMITY = ["contemporary", "generational", "distant", "modern"];
+const ACCESS = ["direct", "informant", "secondhand"];
+
+function meter(label, value, scale, explain) {
+  // Filled segments = how strong this ONE dimension is. Unknown = empty, not weak.
+  const filled = value == null ? 0 : scale.length - scale.indexOf(value);
+  const segs = scale.map((_, i) => `<span class="seg${i < filled ? " on" : ""}"></span>`).join("");
+  const text = value == null ? `<span class="na">unknown</span>` : esc(words(value));
+  return `<div class="ev-row">
+      <div class="ev-label">${label}<span class="ev-explain">${explain}</span></div>
+      <div class="meter" role="img" aria-label="${label}: ${value ?? "unknown"}">${segs}</div>
+      <div class="ev-value">${text}</div>
+    </div>`;
+}
+
+function evidenceHTML(e) {
+  if (e.independent_witnesses === 0) {
+    return `<p class="empty-note">No supporting sources, so there is nothing to grade.</p>`;
+  }
+  const voices = e.independent_witnesses;
+  const copies = e.shallowest_transmission;
+  const extra = [
+    e.qualifying_sources.length ? `Hedged by: ${e.qualifying_sources.map(esc).join(", ")}` : "",
+    e.contradicting_sources.length ? `Contradicted by: ${e.contradicting_sources.map(esc).join(", ")}` : "",
+  ].filter(Boolean).map((t) => `<p class="empty-note">${t}</p>`).join("");
+  return `
+    <div class="evidence">
+      <div class="ev-row">
+        <div class="ev-label">Independent voices<span class="ev-explain">sources that don't copy each other</span></div>
+        <div class="ev-big">${voices}</div>
+        <div class="ev-value">${voices === 1 ? "one voice" : `${voices} voices`}</div>
+      </div>
+      ${meter("Closeness in time", e.closest_proximity, PROXIMITY, "how near the events it was written")}
+      ${meter("How the author knew", e.best_access, ACCESS, "saw it, was told, or read it")}
+      <div class="ev-row">
+        <div class="ev-label">Times copied<span class="ev-explain">steps from the original text</span></div>
+        <div class="ev-big">${copies ?? "?"}</div>
+        <div class="ev-value">${copies === 0 ? "original (or no known copy chain)" : `${copies} cop${copies === 1 ? "y" : "ies"} away`}</div>
+      </div>
+      ${extra}
+    </div>`;
+}
+
 async function showClaim(key) {
   body.dataset.view = "detail";
   let c;
@@ -241,7 +289,8 @@ async function showClaim(key) {
       </div>
       <p class="assertion">${esc(c.assertion)}</p>
       <div class="empty-note">${esc(words(c.kind))}; research ${esc(words(c.research_status))}</div>
-
+      <h2> Strength of evidence</h2>
+      ${evidenceHTML(c.evidence)}
       <h2>Sources</h2>
       ${c.attachments.length ? c.attachments.map(attachmentHTML).join("")
         : `<p class="empty-note">No sources attached.</p>`}
